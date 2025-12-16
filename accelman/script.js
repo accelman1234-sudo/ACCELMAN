@@ -1,6 +1,6 @@
 // ================= ADMIN ================= 
 const ADMIN_USER = "admin";
-const ADMIN_PASS = "1234";
+const ADMIN_PASS = "CLAUDIA4444";
 let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 let productos = JSON.parse(localStorage.getItem("productos")) || [];
 let indiceEditar = null;
