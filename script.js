@@ -1,6 +1,6 @@
 // ================= ADMIN ================= 
 const ADMIN_USER = "admin";
-const ADMIN_PASS = "CLAUDIA4444";
+const ADMIN_PASS = "1234";
 let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 let productos = JSON.parse(localStorage.getItem("productos")) || [];
 let indiceEditar = null;
@@ -65,23 +65,16 @@ function agregarProducto() {
             foto: fotoInput.files.length > 0 ? reader.result : indiceEditar !== null ? productos[indiceEditar].foto : ""
         };
 
-        if(indiceEditar !== null) { 
-            productos[indiceEditar] = producto; 
-            indiceEditar = null; 
-        } else { 
-            productos.push(producto); 
-        }
+        if(indiceEditar !== null) { productos[indiceEditar] = producto; indiceEditar = null; }
+        else { productos.push(producto); }
 
         localStorage.setItem("productos", JSON.stringify(productos));
         limpiarFormulario();
         mostrarProductosAdmin();
+        mostrarProductosCliente(); // actualizar cliente si está abierto
     };
 
-    if(fotoInput.files.length > 0){ 
-        reader.readAsDataURL(fotoInput.files[0]); 
-    } else { 
-        reader.onload(); 
-    }
+    if(fotoInput.files.length > 0){ reader.readAsDataURL(fotoInput.files[0]); } else { reader.onload(); }
 }
 
 function limpiarFormulario() {
@@ -102,14 +95,12 @@ function mostrarProductosAdmin() {
         const productosCat = productos.filter(p => p.categoria===cat);
         if(productosCat.length===0) return;
 
-        // Título categoría
         const titulo = document.createElement("h3");
         titulo.textContent = cat;
         titulo.style.color = "#ff6f61";
         titulo.style.marginBottom = "10px";
         contenedor.appendChild(titulo);
 
-        // Grid de productos
         const grid = document.createElement("div");
         grid.classList.add("categoria-container");
 
@@ -148,6 +139,7 @@ function borrarProducto(index){
     productos.splice(index,1);
     localStorage.setItem("productos",JSON.stringify(productos));
     mostrarProductosAdmin();
+    mostrarProductosCliente(); // actualizar cliente
 }
 
 // EXPORTAR EXCEL
@@ -180,21 +172,17 @@ const productosCliente = document.getElementById("productos-cliente");
 const inputBusqueda = document.getElementById("busqueda-cliente");
 const selectCategoria = document.getElementById("filtro-categoria-cliente");
 
-// ================= FUNCIONES =================
+// Mostrar productos cliente
 function mostrarProductosCliente() {
     productosCliente.innerHTML = "";
-    let categorias = ["Celulares", "Cargadores", "Fundas", "Accesorios"];
-    if (filtroCategoriaCliente) categorias = [filtroCategoriaCliente];
+    let categorias = ["Celulares","Cargadores","Fundas","Accesorios"];
+    if(filtroCategoriaCliente) categorias = [filtroCategoriaCliente];
 
     categorias.forEach(cat => {
-        let productosCat = productos.filter(p => p.categoria === cat);
-
-        if (busquedaCliente) {
-            productosCat = productosCat.filter(p => p.modelo.toLowerCase().includes(busquedaCliente));
-        }
-
-        productosCat.sort((a, b) => ordenPrecioCliente ? b.precio - a.precio : a.precio - b.precio);
-        if (productosCat.length === 0) return;
+        let productosCat = productos.filter(p => p.categoria===cat);
+        if(busquedaCliente) productosCat = productosCat.filter(p => p.modelo.toLowerCase().includes(busquedaCliente));
+        productosCat.sort((a,b)=>ordenPrecioCliente? b.precio-a.precio : a.precio-b.precio);
+        if(productosCat.length===0) return;
 
         const h3 = document.createElement("h3");
         h3.textContent = cat;
@@ -206,7 +194,7 @@ function mostrarProductosCliente() {
         const grid = document.createElement("div");
         grid.classList.add("categoria-container");
 
-        productosCat.forEach(p => {
+        productosCat.forEach(p=>{
             const card = document.createElement("div");
             card.classList.add("card");
             card.innerHTML = `
@@ -226,69 +214,52 @@ function mostrarProductosCliente() {
 }
 
 // ================= EVENTOS CLIENTE =================
-document.addEventListener("DOMContentLoaded", () => {
-    // Botón cliente desde login
-    document.getElementById("btnClienteInicio").addEventListener("click", () => {
-        document.getElementById("login-panel").style.display = "none";
-        clientePanel.style.display = "block";
-        busquedaCliente = "";
-        filtroCategoriaCliente = "";
-        ordenPrecioCliente = false;
-        inputBusqueda.value = "";
-        selectCategoria.value = "";
+document.addEventListener("DOMContentLoaded",()=>{
+    // Botón cliente login
+    document.getElementById("btnClienteInicio").addEventListener("click",()=>{
+        document.getElementById("login-panel").style.display="none";
+        clientePanel.style.display="block";
         mostrarProductosCliente();
     });
 
     // Botón regresar
-    const btnRegresar = document.querySelector(".btn-cliente-regresar");
-    if (btnRegresar) {
-        btnRegresar.addEventListener("click", () => {
-            clientePanel.style.display = "none";
-            document.getElementById("login-panel").style.display = "block";
-            busquedaCliente = "";
-            filtroCategoriaCliente = "";
-            ordenPrecioCliente = false;
-            inputBusqueda.value = "";
-            selectCategoria.value = "";
-        });
-    }
+    document.querySelector(".btn-cliente-regresar").addEventListener("click",()=>{
+        clientePanel.style.display="none";
+        document.getElementById("login-panel").style.display="block";
+        busquedaCliente="";
+        filtroCategoriaCliente="";
+        inputBusqueda.value="";
+        selectCategoria.value="";
+    });
 
     // Botón buscar
-    const btnBuscar = document.querySelector(".btn-cliente-buscar");
-    if (btnBuscar) {
-        btnBuscar.addEventListener("click", () => {
-            busquedaCliente = inputBusqueda.value.toLowerCase();
-            mostrarProductosCliente();
-        });
-    }
+    document.querySelector(".btn-cliente-buscar").addEventListener("click",()=>{
+        busquedaCliente=inputBusqueda.value.toLowerCase();
+        mostrarProductosCliente();
+    });
 
     // Botón ordenar
-    const btnOrdenar = document.querySelector(".btn-cliente-ordenar");
-    if (btnOrdenar) {
-        btnOrdenar.addEventListener("click", () => {
-            ordenPrecioCliente = !ordenPrecioCliente;
-            mostrarProductosCliente();
-        });
-    }
+    document.querySelector(".btn-cliente-ordenar").addEventListener("click",()=>{
+        ordenPrecioCliente=!ordenPrecioCliente;
+        mostrarProductosCliente();
+    });
 
-    // Filtro de categoría
-    if (selectCategoria) {
-        selectCategoria.addEventListener("change", () => {
-            filtroCategoriaCliente = selectCategoria.value;
-            mostrarProductosCliente();
-        });
-    }
+    // Filtro categoría
+    selectCategoria.addEventListener("change",()=>{
+        filtroCategoriaCliente=selectCategoria.value;
+        mostrarProductosCliente();
+    });
 });
 
 // ================= DATOS INICIALES =================
 if(productos.length===0){
     productos=[
-        { modelo:"iPhone 14", precio:25000, descripcion:"Celular Apple", categoria:"Celulares", foto:"iphone14.jpg" },
-        { modelo:"Cargador Rápido", precio:450, descripcion:"Cargador USB", categoria:"Cargadores", foto:"cargador.jpg" },
-        { modelo:"Funda Galaxy", precio:350, descripcion:"Funda protectora", categoria:"Fundas", foto:"funda.jpg" },
-        { modelo:"Audífonos Bluetooth", precio:1200, descripcion:"Inalámbricos", categoria:"Accesorios", foto:"audifonos.jpg" }
+        {modelo:"iPhone 14", precio:25000, descripcion:"Celular Apple", categoria:"Celulares", foto:"iphone14.jpg"},
+        {modelo:"Cargador Rápido", precio:450, descripcion:"Cargador USB", categoria:"Cargadores", foto:"cargador.jpg"},
+        {modelo:"Funda Galaxy", precio:350, descripcion:"Funda protectora", categoria:"Fundas", foto:"funda.jpg"},
+        {modelo:"Audífonos Bluetooth", precio:1200, descripcion:"Inalámbricos", categoria:"Accesorios", foto:"audifonos.jpg"}
     ];
-    localStorage.setItem("productos", JSON.stringify(productos));
+    localStorage.setItem("productos",JSON.stringify(productos));
 }
 
 // Mostrar admin al cargar
