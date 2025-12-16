@@ -1,0 +1,225 @@
+/* ===============================
+   FONDO GENERAL Y BODY
+================================ */
+body {
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: url("fondo.jpg") no-repeat center center fixed;
+    background-size: cover;
+    color: #333;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.5);
+    z-index: -1;
+}
+
+/* ===============================
+   LOGIN
+================================ */
+#login-panel {
+    background: rgba(255,249,240,0.95);
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 400px;
+    margin: 60px auto;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    text-align: center;
+}
+
+#login-panel input {
+    width: 90%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.login-botones {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-around;
+}
+
+/* ===============================
+   BOTONES (TODOS CON EFECTO BRINCAR)
+================================ */
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+}
+
+/* --- ADMIN --- */
+.btn-admin-agregar { background:#ff6f61; color:#fff; }
+.btn-admin-agregar:hover { background:#ff856f; }
+
+.btn-admin-borrar { background:#f85c5c; color:#fff; }
+.btn-admin-borrar:hover { background:#e14b4b; }
+
+.btn-admin-exportar { background:#17a2b8; color:#fff; }
+.btn-admin-exportar:hover { background:#1290b5; }
+
+.btn-admin-buscar { background:#0b79f7; color:#fff; }
+.btn-admin-buscar:hover { background:#065ab4; }
+
+/* --- CLIENTE --- */
+.btn-cliente-categorias { background:#25D366; color:#fff; }
+.btn-cliente-categorias:hover { background:#1DA851; }
+
+.btn-cliente-regresar { background:#0b79f7; color:#fff; }
+.btn-cliente-regresar:hover { background:#065ab4; }
+
+.btn-cliente-buscar { background:#61c8ff; color:#fff; }
+.btn-cliente-buscar:hover { background:#3aa3e0; }
+
+.btn-ordenar-cliente { background:#f7b500; color:#000; }
+.btn-ordenar-cliente:hover { background:#e6a300; }
+
+.btn-whatsapp { background:#25D366; color:#fff; }
+.btn-whatsapp:hover { background:#1DA851; }
+
+/* ===============================
+   PANEL BONITO (CLIENTE Y ADMIN)
+================================ */
+.panel-bonito {
+    background: rgba(255,255,240,0.95);
+    border-radius: 12px;
+    padding: 25px;
+    max-width: 1000px;
+    margin: 30px auto;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+/* ===============================
+   FORM PRODUCTO ADMIN
+================================ */
+.form-producto {
+    background: #fff3e0;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    margin-bottom: 20px;
+}
+
+.form-producto input,
+.form-producto select,
+.form-producto textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* ===============================
+   GRID PRODUCTOS 3 POR FILA
+================================ */
+.categoria-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+@media(max-width:900px){ .categoria-container { grid-template-columns: repeat(2,1fr); } }
+@media(max-width:600px){ .categoria-container { grid-template-columns: 1fr; } }
+
+/* ===============================
+   TARJETAS PRODUCTOS
+================================ */
+.card {
+    background: rgba(255,249,240,0.95);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.card img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+
+.card .info {
+    text-align: center;
+}
+
+.card h4 {
+    color: #0b79f7;
+    margin: 5px 0;
+}
+
+.card p {
+    font-size: 14px;
+    margin: 2px 0;
+}
+
+/* Botones dentro de tarjeta */
+.card button {
+    margin-top: 5px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* ===============================
+   BOTONES CLIENTE ARRIBA
+================================ */
+.botones-arriba {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+/* Select categorías */
+.btn-categorias-cliente {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #fff;
+    background:#25D366;
+}
+.btn-categorias-cliente:hover { background:#1DA851; }
+
+/* ===============================
+   TITULOS DE CATEGORIAS
+================================ */
+.categoria-container h3 {
+    grid-column: 1 / -1;
+    color: #ff6f61;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #ff6f61;
+    padding-bottom: 5px;
+}
+
+/* ===============================
+   AJUSTES RESPONSIVOS
+================================ */
+@media(max-width:600px){
+    .card img { width: 80px; height: 80px; }
+}
+
+
